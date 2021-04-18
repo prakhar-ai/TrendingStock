@@ -8,6 +8,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 from textblob import TextBlob
 import nltk
 import requests
+import tweepy as tw
 
 nltk.download('vader_lexicon')
 
@@ -54,6 +55,25 @@ def ticker_recommendations(ticker_name):
     rec_df = rec_df[['Firm','To Grade','Date']]
     rec_df['Date'] = rec_df['Date'].dt.strftime('%Y-%m-%d')
     return Response(rec_df.to_json(orient="records"), mimetype='application/json')
+
+@app.route('/ticker/<string:ticker_name>/tweets', methods=['GET'])
+def ticker_tweets(ticker_name):
+    auth = tw.OAuthHandler("aA9ZxW6NJzq8Q62sfrYhkUNt6", "xoVKPOpTTXczrml4BCdghhpUfrqdlmReQSXkiRaPNvg8pJG1rA")
+    api = tw.API(auth)
+
+    search_words = "$" + ticker_name
+    
+    tweets = tw.Cursor(api.search,
+              q=search_words,
+              result_type='popular',
+              lang="en",).items(10)
+
+    tweets_list = []
+
+    for tweet in tweets:
+        tweets_list.append(api.get_oembed("https://twitter.com/"+ str(tweet.user.screen_name) + "/status/" + str(tweet.id)))
+    
+    return jsonify(tweets_list)
 
 @app.route('/ticker/<string:ticker_name>/sentiment', methods=['GET'])
 def ticker_sentiment(ticker_name):
