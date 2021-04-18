@@ -27,7 +27,7 @@ def trending_reddit():
     return Response(reddit_df.to_json(orient="records"), mimetype='application/json')
 
 @app.route('/trending/reddit/top', methods=['GET'])
-def trending_reddit():
+def trending_reddit_top():
     table = pd.read_html('https://unbiastock.com/TableReddit.php?compare2=all&compare_sector=6&mailnews=')
     reddit_df = table[0]
     reddit_df = reddit_df[['Ticker','Reddit Score 1','Previous Score','Score Change %','Stock Price $']]
