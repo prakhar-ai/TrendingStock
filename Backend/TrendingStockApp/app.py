@@ -8,11 +8,8 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 from textblob import TextBlob
 import nltk
 import requests
-<<<<<<< HEAD
 import tweepy as tw
-=======
 from flask_cors import CORS 
->>>>>>> ef729d53369e6512072d2ba2732224b7b0a7c982
 
 nltk.download('vader_lexicon')
 
