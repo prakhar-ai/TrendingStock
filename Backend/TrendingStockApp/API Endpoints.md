@@ -24,7 +24,8 @@ Install requirements.txt
 8. Ticker Tweets,
 `/ticker/<ticker_name>/tweets` 
 
-9. Added Top methods (Fetches only those stocks with score>5)
-`/trending/twitter/top  
-/trending/reddit/top` 
+9.Get **Top** trending Reddit stocks,(Fetches only those stocks with score>5)
+`/trending/reddit/top` 
 
+10.Get **Top** trending Twitter stocks,(Fetches only those stocks with score>5)
+`/trending/twitter/top`
