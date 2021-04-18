@@ -26,12 +26,30 @@ def trending_reddit():
     reddit_df = reddit_df.rename(columns={"Reddit Score 1": "Reddit Score", "Score Change %": "Score Change", "Stock Price $": "Stock Price" })
     return Response(reddit_df.to_json(orient="records"), mimetype='application/json')
 
+@app.route('/trending/reddit/top', methods=['GET'])
+def trending_reddit():
+    table = pd.read_html('https://unbiastock.com/TableReddit.php?compare2=all&compare_sector=6&mailnews=')
+    reddit_df = table[0]
+    reddit_df = reddit_df[['Ticker','Reddit Score 1','Previous Score','Score Change %','Stock Price $']]
+    reddit_df = reddit_df.rename(columns={"Reddit Score 1": "Reddit Score", "Score Change %": "Score Change", "Stock Price $": "Stock Price" })
+    reddit_df.loc[reddit_df['Reddit Score'] >5]
+    return Response(reddit_df.to_json(orient="records"), mimetype='application/json')
+
 @app.route('/trending/twitter', methods=['GET'])
 def trending_twitter():
     table = pd.read_html('https://unbiastock.com/twitter.php')
     twitter_df = table[0]
     twitter_df = twitter_df[['Ticker','Twitter Score','Previous Score','Score Change %','Stock Price $','Twitter Likes Score','Twitter Retweets Score','Industry']]
     twitter_df = twitter_df.rename(columns={"Score Change %": "Score Change", "Stock Price $": "Stock Price" })
+    return Response(twitter_df.to_json(orient="records"), mimetype='application/json')
+
+@app.route('/trending/twitter/top', methods=['GET'])
+def trending_twitter_top():
+    table = pd.read_html('https://unbiastock.com/twitter.php')
+    twitter_df = table[0]
+    twitter_df = twitter_df[['Ticker','Twitter Score','Previous Score','Score Change %','Stock Price $','Twitter Likes Score','Twitter Retweets Score','Industry']]
+    twitter_df = twitter_df.rename(columns={"Score Change %": "Score Change", "Stock Price $": "Stock Price" })
+    twitter_df = twitter_df.loc[twitter_df['Twitter Score'] >5]
     return Response(twitter_df.to_json(orient="records"), mimetype='application/json')
 
 @app.route('/ticker/<string:ticker_name>', methods=['GET'])
