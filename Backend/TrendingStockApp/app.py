@@ -8,12 +8,18 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 from textblob import TextBlob
 import nltk
 import requests
+<<<<<<< HEAD
 import tweepy as tw
+=======
+from flask_cors import CORS 
+>>>>>>> ef729d53369e6512072d2ba2732224b7b0a7c982
 
 nltk.download('vader_lexicon')
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+
+CORS(app)
 
 @app.route('/trending/reddit', methods=['GET'])
 def trending_reddit():
